@@ -4,41 +4,38 @@
  * and open the template in the editor.
  */
 package kata5p2;
-
-import Model.Histogram;
-import Model.Mail;
+import Model.*;
 import java.io.IOException;
 import java.util.List;
-import view.HistogramDisplay;
-import view.MailHistogramBuilder;
-import view.MailListReader;
+import View.*;
 
 /**
  *
  * @author danie
  */
+
 public class Kata5P2 {
 
-    private List<Mail> mailList;
-    Histogram<String> histogram;
+    private static List<String> listMails;
+    private static Histogram histograma;
     public static void main(String[] args) throws IOException {
-        new Kata5P2().execute();
-    }
-    public void execute() throws IOException {
         input();
         process();
         output();
     }
-    private void input() throws IOException {
-        String filname = "C:\\Users\\danie\\Documents\\NetBeansProjects\\kata4\\src\\email.txt";
-        mailList = MailListReader.read(filname);
-    }
-    private void process() {
-        histogram = MailHistogramBuilder.build(mailList);
-    }
-    private void output() {
-        HistogramDisplay histoDisplay = new HistogramDisplay(histogram);
-        histoDisplay.execute();
+   
+     public static void input() throws IOException{
+        MailListReaderBD bd = new MailListReaderBD();
+        listMails = bd.read("jdbc:sqlite:Kata5.db", "EMAIL");
     }
     
+    public static void process(){
+        MailHistogramBuilder builded = new MailHistogramBuilder();
+        histograma = builded.build(listMails);
+
+    }
+    
+    public static void output(){
+        new HistogramDisplay(histograma).execute();
+    }
 }
